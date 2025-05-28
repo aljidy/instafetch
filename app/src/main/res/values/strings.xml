@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">InstaFetch</string>
+    <string name="photo_screen_back_button_content_description">Back to Greeting Screen</string>
+    <string name="error_message_title">Something went wrong</string>
+    <string name="error_message_subtitle">Please try again later</string>
+</resources>
