@@ -61,7 +61,7 @@ I put together a  prioritised list of the tasks to tackle:
 
 ## Visual Design Improvements
 
-If I had more time, Although visual design isn't my forte, here's a few improvements I would consider:
+Although visual design isn't my forte, if I had more time, I would be keen to condsider the following improvments:
 
 - Improving the Photo grid on the breeds photos screen so they sit a bit more cohesively together and don't look as jarring when there are portrait photos.
 - Maybe a bit more distinction between the different items on the DogBreed list
