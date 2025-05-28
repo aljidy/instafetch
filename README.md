@@ -78,7 +78,7 @@ I thought I might explain a bit about my details of technical decisions:
 
 - I kept the number of packages light to make it easier to navigate for yourselves, however would change this as the amount of code increased
 - I frequently left small classes like Models where they were used rather than extract them out due to the small size of the codebase
-- I deputised writing UI tests due to the fact it was quicker for me to manually test however I would be keen to implement them if this were continued
+- I deprioritised writing UI tests due to the fact it was quicker for me to manually test however I would be keen to implement them if this were continued
 - It seems the breed data from the API is a bit inconsistent as some breeds have the words in their name reversed and some don't, this make it harder to show this to a user in human readable way 
 
 If I had more time, I would look to implement the following changes:
