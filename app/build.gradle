@@ -13,7 +13,7 @@ android {
     defaultConfig {
         applicationId "com.adam.instafetch"
         minSdk 21
-        targetSdk 35  
+        targetSdk 35
         versionCode 1
         versionName "1.0"
 
@@ -79,7 +79,7 @@ dependencies {
 //        implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.8.6'
 
 
-        implementation libs.coil.compose
+    implementation libs.coil.compose
 //    // Typed DataStore
 //    implementation "androidx.datastore:datastore-preferences:1.1.6"
 //    implementation "androidx.datastore:datastore-preferences-rxjava2:1.1.6"

@@ -25,7 +25,7 @@ fun CentredLoadingSpinner(modifier: Modifier = Modifier) {
 
 @Preview(showBackground = true)
 @Composable
-fun PreviewCentredLoadingSpinner()  {
+fun PreviewCentredLoadingSpinner() {
     // Make sure to use interactive mode to see animation
     MaterialTheme {
         CentredLoadingSpinner()

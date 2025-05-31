@@ -8,7 +8,6 @@ import org.junit.Test
 import org.mockito.Mockito.mock
 
 class DogsRepoTest {
-
     private lateinit var dogsService: DogsService
     private lateinit var dogsRepo: DogsRepo
 
