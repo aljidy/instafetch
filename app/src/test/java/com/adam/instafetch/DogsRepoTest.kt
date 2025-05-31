@@ -1,11 +1,11 @@
 package com.adam.instafetch
 
-import com.nhaarman.mockitokotlin2.whenever
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mockito.mock
+import org.mockito.kotlin.whenever
 
 class DogsRepoTest {
     private lateinit var dogsService: DogsService
