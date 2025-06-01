@@ -20,6 +20,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -52,7 +53,7 @@ fun BreedPhotosScreen(
                 Text(text = breedName)
             },
             navigationIcon = {
-                IconButton(onClick = onNavigateBackTapped) {
+                IconButton(onClick = onNavigateBackTapped, modifier = Modifier.testTag("PhotoScreen_BackButton")) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                         contentDescription = stringResource(R.string.photo_screen_back_button_content_description),
@@ -99,7 +100,7 @@ private fun PhotoGrid(
             ) { url ->
                 AsyncImage(
                     model = url,
-                    modifier = Modifier.width(BREED_LIST_GRID_CELL_SIZE_DP.dp),
+                    modifier = Modifier.width(BREED_LIST_GRID_CELL_SIZE_DP.dp).testTag("BreedPhotosScreen_Image"),
                     contentScale = ContentScale.Fit,
                     contentDescription = null,
                 )
