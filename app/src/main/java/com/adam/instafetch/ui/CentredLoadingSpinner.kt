@@ -7,13 +7,14 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import com.adam.instafetch.theme.Spacing
 
 @Composable
 fun CentredLoadingSpinner(modifier: Modifier = Modifier) {
     Box(
-        modifier = modifier,
+        modifier = modifier.testTag("CentredLoadingSpinner"),
         contentAlignment = Alignment.Center,
     ) {
         CircularProgressIndicator(
