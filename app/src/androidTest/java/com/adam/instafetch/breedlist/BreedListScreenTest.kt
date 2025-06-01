@@ -1,4 +1,4 @@
-package com.adam.instafetch
+package com.adam.instafetch.breedlist
 
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
@@ -6,8 +6,7 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.adam.instafetch.breedlist.BreedListScreen
-import com.adam.instafetch.breedlist.BreedListViewModel
+import com.adam.instafetch.DogBreedModel
 import com.adam.instafetch.theme.InstaFetchTheme
 import com.adam.instafetch.util.fakeDogRepo
 import kotlinx.coroutines.delay
@@ -17,7 +16,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import java.io.IOException
 
-
 private val dogBreed1 = DogBreedModel("breed1", "Breed 1")
 private val dogBreed2 = DogBreedModel("breed2", "Breed", "type 2")
 
@@ -26,7 +24,6 @@ class BreedListScreenTest {
 
     @get:Rule
     val composeTestRule = createComposeRule()
-
 
     @Test
     fun assertErrorMessageShownWhenDogRepoThrowsException() {
@@ -52,7 +49,7 @@ class BreedListScreenTest {
         val viewModel = BreedListViewModel(
             fakeDogRepo(getDogBreeds = {
                 delay(3000)
-                listOf(dogBreed1, dogBreed2)
+                listOf()
             })
         )
 
