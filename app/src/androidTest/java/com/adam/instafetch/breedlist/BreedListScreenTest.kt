@@ -46,15 +46,10 @@ class BreedListScreenTest {
 
     @Test
     fun assertLoadingSpinnerShownWhenRepoHasDelayInResponse() {
-        val viewModel = BreedListViewModel(
-            fakeDogRepo(getDogBreeds = {
-                delay(3000)
-                listOf()
-            })
-        )
         val viewModel =
             BreedListViewModel(
                 fakeDogRepo(getDogBreeds = {
+                    delay(1000)
                     listOf()
                 }),
             )
@@ -107,3 +102,4 @@ class BreedListScreenTest {
         assertEquals(dogBreed2, clickedBreed)
     }
 }
+// TODO test navigation
