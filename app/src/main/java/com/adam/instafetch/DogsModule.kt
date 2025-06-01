@@ -13,7 +13,7 @@ import retrofit2.converter.kotlinx.serialization.asConverterFactory
 // Leaving context here in case it's need for injection/init in future
 class DogsModule(applicationContext: Context) {
     private val dogsService: DogsService = createDogsService()
-    val repo: DogsRepoImpl = DogsRepoImpl(dogsService)
+    val repo: DogsRepo = DogsRepoImpl(dogsService)
 
     companion object {
         private const val JSON_MIME_TYPE = "application/json; charset=UTF8"
