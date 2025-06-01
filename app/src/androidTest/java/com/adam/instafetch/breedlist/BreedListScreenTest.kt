@@ -21,22 +21,22 @@ private val dogBreed2 = DogBreedModel("breed2", "Breed", "type 2")
 
 @RunWith(AndroidJUnit4::class)
 class BreedListScreenTest {
-
     @get:Rule
     val composeTestRule = createComposeRule()
 
     @Test
     fun assertErrorMessageShownWhenDogRepoThrowsException() {
-        val viewModel = BreedListViewModel(
-            fakeDogRepo(getDogBreeds = {
-                throw IOException("Test Exception ")
-            })
-        )
+        val viewModel =
+            BreedListViewModel(
+                fakeDogRepo(getDogBreeds = {
+                    throw IOException("Test Exception ")
+                }),
+            )
 
         composeTestRule.setContent {
             InstaFetchTheme {
                 BreedListScreen(
-                    viewModel = viewModel
+                    viewModel = viewModel,
                 ) { } // Not Under test
             }
         }
@@ -52,12 +52,18 @@ class BreedListScreenTest {
                 listOf()
             })
         )
+        val viewModel =
+            BreedListViewModel(
+                fakeDogRepo(getDogBreeds = {
+                    listOf()
+                }),
+            )
 
         composeTestRule.setContent {
             InstaFetchTheme {
                 BreedListScreen(
                     viewModel = viewModel,
-                    {  } // Not Under test
+                    { }, // Not Under test
                 )
             }
         }
@@ -69,12 +75,13 @@ class BreedListScreenTest {
      * Note: I've combined both the press and display assertions into a single test to minimise the runtime of the tests
      */
     @Test
-    fun assertContentShownAndClickCallsCallbackWhenRepoHasDelayInResponse() {
-        val viewModel = BreedListViewModel(
-            fakeDogRepo(getDogBreeds = {
-                listOf(dogBreed1, dogBreed2)
-            })
-        )
+    fun assertContentShownAndClickCallsCallbackWhenRepoReturnsDogsInResponse() {
+        val viewModel =
+            BreedListViewModel(
+                fakeDogRepo(getDogBreeds = {
+                    listOf(dogBreed1, dogBreed2)
+                }),
+            )
 
         // Not using Mockito (see README) so creating our own verification mechanism here
         var clickedBreed: DogBreedModel? = null
@@ -86,7 +93,7 @@ class BreedListScreenTest {
             InstaFetchTheme {
                 BreedListScreen(
                     viewModel = viewModel,
-                    testCallback
+                    testCallback,
                 )
             }
         }
