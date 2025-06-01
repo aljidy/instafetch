@@ -14,7 +14,7 @@ class DogsRepoTest {
     @Before
     fun setUp() {
         dogsService = mock()
-        dogsRepo = DogsRepo(dogsService)
+        dogsRepo = DogsRepoImpl(dogsService)
     }
 
     @Test

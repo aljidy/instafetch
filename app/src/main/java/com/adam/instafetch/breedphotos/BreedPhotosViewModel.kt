@@ -13,7 +13,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.adam.instafetch.BaseViewModel
 import com.adam.instafetch.DogsApp
-import com.adam.instafetch.DogsRepo
+import com.adam.instafetch.DogsRepoImpl
 import kotlinx.coroutines.launch
 import java.io.IOException
 
@@ -23,7 +23,7 @@ data class BreedPhotoState(
     val isLoading: Boolean = false,
 )
 
-class BreedPhotosViewModel(private val repo: DogsRepo, private val breedId: String) :
+class BreedPhotosViewModel(private val repo: DogsRepoImpl, private val breedId: String) :
     BaseViewModel<BreedPhotoState>(BreedPhotoState()) {
     init {
         getPhotos()

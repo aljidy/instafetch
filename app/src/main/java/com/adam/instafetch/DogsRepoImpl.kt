@@ -1,6 +1,19 @@
 package com.adam.instafetch
 
-class DogsRepo(private val dogsService: DogsService) {
+
+// TODO better naming pattern for impl
+interface DogsRepo {
+    suspend fun getDogBreeds(): List<DogBreedModel>
+
+    /**
+     * @param breedId - DogApi\'s breed query param, e.g. akita or collie/border or hound/walker
+     *
+     * Returns URLs of photos of dogs
+     */
+    suspend fun getBreedPhotos(breedId: String): ApiDogPhotosResponse
+}
+
+class DogsRepoImpl(private val dogsService: DogsService) : DogsRepo {
     companion object {
         private const val DEFAULT_PHOTO_NUMBER = 10
     }
@@ -8,7 +21,7 @@ class DogsRepo(private val dogsService: DogsService) {
     /**
      * Returns list dog breeds from DogApi
      */
-    suspend fun getDogBreeds(): List<DogBreedModel> {
+    override suspend fun getDogBreeds(): List<DogBreedModel> {
         return mapDogBreeds(dogsService.getAllBreeds())
     }
 
@@ -17,7 +30,7 @@ class DogsRepo(private val dogsService: DogsService) {
      *
      * Returns URLs of photos of dogs
      */
-    suspend fun getBreedPhotos(breedId: String): ApiDogPhotosResponse {
+    override suspend fun getBreedPhotos(breedId: String): ApiDogPhotosResponse {
         return dogsService.getPhotosOfBreeds(breedId, DEFAULT_PHOTO_NUMBER)
     }
 
