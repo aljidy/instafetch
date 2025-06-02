@@ -33,4 +33,4 @@ Please note I've disregarded some of the changes in the original and focused on 
   - Whilst I prefer the ease of Koin, I used Hilt, as it's the typically recommended solution.
 
 ## Next Steps
-- If I had more time I would look at deduplicating the ViewModel loading and error handling
+- If I had more time I would look at deduplicating the ViewModel loading and error handling and adding instrumented tests to cover navigation
