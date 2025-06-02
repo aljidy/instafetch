@@ -6,6 +6,7 @@ Please note I've disregarded some of the changes in the original and focused on 
 
 ## Notes:
 
+### UI Tests
 - I've added UI Tests: BreedPhotosScreenTest, BreedListScreenTest
   - For UI tests, I had a fair bit of trouble trying to get the mockito-inline working, so rather than spending
     too much time on it, I made my own fakes where required, as can be seen in `BreedListScreenTest.kt` & `BreedPhotosScreenTest.kt`
@@ -14,16 +15,22 @@ Please note I've disregarded some of the changes in the original and focused on 
     - If this were a production codebase, it would be important to have both integration and UI test coverage.
   - Ideally I would have tests for navigation, however this would likely be covered by integration tests
 
+
+### Unit Tests
 - I've added more unit tests: BreedPhotosViewModelImplTest & BreedListViewModelTest
   - I've remove DogsRepo as all logic is now in the DogsApiMapper, so a test for DogsRepo would just cover implementation detail.  
 
+
+### Maintainability and Elegance
 - By abstracting the implementation from interface ViewModels and the DogsRepo, it allows for easier testing but also makes the code a bit more maintainable too
 - I've also abstract the mapping from API types to Domain Models and also made the ViewModels not depend directly on the API models for the sake of maintainability.
 - Navigation routes now have their own sealed class.
 - In some instances (like the state models), I've moved these into their own files as opposed to the Viewmodels, for readability and discoverability.  
 - By using DogsApiMapper, the viewModel no longer uses any Models from the API layer, making the app easy to maintain as there's no direct dependency anymore.
 
+## DI
 - For the DI, I thought that the boilerplate was the main concern with how unwieldy some of the factories were and it might make more sense to use a proper DI solution instead.
   - Whilst I prefer the ease of Koin, I used Hilt, as it's the typically recommended solution.
 
+## Next Steps
 - If I had more time I would look at deduplicating the ViewModel loading and error handling
