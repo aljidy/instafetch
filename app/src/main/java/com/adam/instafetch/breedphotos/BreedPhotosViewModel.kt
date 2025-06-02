@@ -18,14 +18,14 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import java.io.IOException
 
-data class BreedPhotoState(
+data class BreedPhotosState(
     val dogPhotoUrl: List<String> = listOf(),
     val isError: Boolean = false,
     val isLoading: Boolean = false,
 )
 
 class BreedPhotosViewModelImpl(private val repo: DogsRepo, private val breedId: String) :
-    BaseViewModel<BreedPhotoState>(BreedPhotoState()), BreedPhotosViewModel {
+    BaseViewModel<BreedPhotosState>(BreedPhotosState()), BreedPhotosViewModel {
     init {
         getPhotos()
     }
@@ -76,5 +76,5 @@ class BreedPhotosViewModelImpl(private val repo: DogsRepo, private val breedId: 
 }
 
 interface BreedPhotosViewModel {
-    val state: StateFlow<BreedPhotoState>
+    val state: StateFlow<BreedPhotosState>
 }

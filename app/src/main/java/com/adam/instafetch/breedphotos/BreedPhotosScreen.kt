@@ -89,7 +89,7 @@ fun BreedPhotosScreen(
 @Composable
 private fun PhotoGrid(
     modifier: Modifier = Modifier,
-    state: BreedPhotoState,
+    state: BreedPhotosState,
 ) {
     LazyVerticalStaggeredGrid(
         modifier = modifier,
@@ -115,7 +115,7 @@ private fun DetailScreenPreview() {
     InstaFetchTheme {
         PhotoGrid(
             state =
-                BreedPhotoState(
+                BreedPhotosState(
                     listOf(
                         "https://images.dog.ceo/breeds/australian-kelpie/IMG_2599.jpg",
                         "https://images.dog.ceo/breeds/australian-kelpie/IMG_3675.jpg",

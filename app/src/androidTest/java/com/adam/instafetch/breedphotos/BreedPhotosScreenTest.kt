@@ -30,9 +30,9 @@ class BreedPhotosScreenTest {
     @get:Rule
     val composeTestRule = createComposeRule()
 
-    private fun getFakeViewModel(state: BreedPhotoState) =
+    private fun getFakeViewModel(state: BreedPhotosState) =
         object : BreedPhotosViewModel {
-            override val state: StateFlow<BreedPhotoState> = MutableStateFlow(state)
+            override val state: StateFlow<BreedPhotosState> = MutableStateFlow(state)
         }
 
     @OptIn(DelicateCoilApi::class)
@@ -52,7 +52,7 @@ class BreedPhotosScreenTest {
 
     @Test
     fun assertErrorMessageShownWhenDogRepoThrowsException() {
-        val isErrorState = BreedPhotoState(isError = true, isLoading = false, dogPhotoUrl = listOf())
+        val isErrorState = BreedPhotosState(isError = true, isLoading = false, dogPhotoUrl = listOf())
 
         composeTestRule.setContent {
             InstaFetchTheme {
@@ -69,7 +69,7 @@ class BreedPhotosScreenTest {
 
     @Test
     fun assertLoadingSpinnerShownWhenRepoHasDelayInResponse() {
-        val isLoadingState = BreedPhotoState(isError = false, isLoading = true, dogPhotoUrl = listOf())
+        val isLoadingState = BreedPhotosState(isError = false, isLoading = true, dogPhotoUrl = listOf())
 
         composeTestRule.setContent {
             InstaFetchTheme {
@@ -89,7 +89,7 @@ class BreedPhotosScreenTest {
      */
     @Test
     fun assertContentShownAndNavigationWorksWhenRepoHasValidResponse() {
-        val isLoadingState = BreedPhotoState(isError = false, isLoading = false, dogPhotoUrl = List(9) { "https://example.com/image.jpg" })
+        val isLoadingState = BreedPhotosState(isError = false, isLoading = false, dogPhotoUrl = List(9) { "https://example.com/image.jpg" })
 
         var clickedBack: Boolean? = null
         val testCallback: () -> Unit = {
