@@ -1,6 +1,5 @@
 package com.adam.instafetch
 
-
 // TODO better naming pattern for impl
 interface DogsRepo {
     suspend fun getDogBreeds(): List<DogBreedModel>

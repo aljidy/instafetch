@@ -17,7 +17,7 @@ import org.mockito.kotlin.whenever
 import java.io.IOException
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class BreedListViewModelTest {
+class BreedListViewModelImplTest {
     private lateinit var dogsRepo: DogsRepo
     private val testDispatcher = StandardTestDispatcher()
 
@@ -32,7 +32,7 @@ class BreedListViewModelTest {
         runTest {
             whenever(dogsRepo.getDogBreeds()).thenReturn(emptyList())
 
-            val viewmodel = BreedListViewModel(dogsRepo, testDispatcher)
+            val viewmodel = BreedListViewModelImpl(dogsRepo, testDispatcher)
 
             viewmodel.state.test {
                 val initialState = awaitItem()
@@ -55,7 +55,7 @@ class BreedListViewModelTest {
                 ),
             )
 
-            val viewmodel = BreedListViewModel(dogsRepo, testDispatcher)
+            val viewmodel = BreedListViewModelImpl(dogsRepo, testDispatcher)
 
             advanceUntilIdle()
 
@@ -76,7 +76,7 @@ class BreedListViewModelTest {
         runTest {
             whenever(dogsRepo.getDogBreeds()).thenAnswer { throw IOException("test exception") }
 
-            val viewmodel = BreedListViewModel(dogsRepo, testDispatcher)
+            val viewmodel = BreedListViewModelImpl(dogsRepo, testDispatcher)
 
             advanceUntilIdle()
 

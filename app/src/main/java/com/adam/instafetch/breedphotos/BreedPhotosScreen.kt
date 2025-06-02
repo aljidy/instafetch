@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
 import com.adam.instafetch.R
-import com.adam.instafetch.breedphotos.BreedPhotosViewModel.Companion.extrasWithBreedId
+import com.adam.instafetch.breedphotos.BreedPhotosViewModelImpl.Companion.extrasWithBreedId
 import com.adam.instafetch.theme.InstaFetchTheme
 import com.adam.instafetch.ui.CentredLoadingSpinner
 import com.adam.instafetch.ui.GenericErrorMessage
@@ -41,8 +41,8 @@ fun BreedPhotosScreen(
     breedName: String,
     breedPhotosViewModel: BreedPhotosViewModel =
         viewModel(
-            modelClass = BreedPhotosViewModel::class,
-            factory = BreedPhotosViewModel.Factory,
+            modelClass = BreedPhotosViewModelImpl::class,
+            factory = BreedPhotosViewModelImpl.Factory,
             extras = extrasWithBreedId(breedId),
         ),
     onNavigateBackTapped: () -> Unit,

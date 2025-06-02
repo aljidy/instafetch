@@ -120,7 +120,7 @@ private fun BreedListScreenPreview() {
     InstaFetchTheme {
         val context = LocalContext.current
 
-        BreedListScreen(viewModel<BreedListViewModel>()) {
+        BreedListScreen(viewModel<BreedListViewModelImpl>()) {
             Toast.makeText(context, "Button tapped", Toast.LENGTH_LONG).show()
         }
     }

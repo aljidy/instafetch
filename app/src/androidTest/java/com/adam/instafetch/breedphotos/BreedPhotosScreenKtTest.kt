@@ -16,27 +16,29 @@ import coil3.ImageLoader
 import coil3.SingletonImageLoader
 import coil3.annotation.DelicateCoilApi
 import coil3.test.FakeImageLoaderEngine
-import com.adam.instafetch.ApiDogPhotosResponse
 import com.adam.instafetch.theme.InstaFetchTheme
-import com.adam.instafetch.util.fakeDogRepo
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import java.io.IOException
 
 @RunWith(AndroidJUnit4::class)
 class BreedPhotosScreenKtTest {
     @get:Rule
     val composeTestRule = createComposeRule()
 
+    private fun getFakeViewModel(state: BreedPhotoState) =
+        object : BreedPhotosViewModel {
+            override val state: StateFlow<BreedPhotoState> = MutableStateFlow(state)
+        }
+
     @OptIn(DelicateCoilApi::class)
     @Before
     fun setup() {
         // Fakes the image loading for the AsyncImage, so we can assert images are displayed when an URL is returned
-
         val engine =
             FakeImageLoaderEngine.Builder()
                 .intercept("https://example.com/image.jpg", ColorImage(Color.Red.toArgb(), width = 300, height = 300))
@@ -50,20 +52,12 @@ class BreedPhotosScreenKtTest {
 
     @Test
     fun assertErrorMessageShownWhenDogRepoThrowsException() {
-        val viewModel =
-            BreedPhotosViewModel(
-                fakeDogRepo(
-                    getBreedPhotos = {
-                        throw IOException("Test Exception ")
-                    },
-                ),
-                breedId = "",
-            )
+        val isErrorState = BreedPhotoState(isError = true, isLoading = false, dogPhotoUrl = listOf())
 
         composeTestRule.setContent {
             InstaFetchTheme {
                 BreedPhotosScreen(
-                    breedPhotosViewModel = viewModel,
+                    breedPhotosViewModel = getFakeViewModel(isErrorState),
                     breedId = "", // Not Under test
                     breedName = "", // Not Under test
                 ) { }
@@ -75,19 +69,12 @@ class BreedPhotosScreenKtTest {
 
     @Test
     fun assertLoadingSpinnerShownWhenRepoHasDelayInResponse() {
-        val viewModel =
-            BreedPhotosViewModel(
-                fakeDogRepo(getBreedPhotos = {
-                    delay(1000) // TODO explain race condition
-                    ApiDogPhotosResponse()
-                }),
-                breedId = "",
-            )
+        val isLoadingState = BreedPhotoState(isError = false, isLoading = true, dogPhotoUrl = listOf())
 
         composeTestRule.setContent {
             InstaFetchTheme {
                 BreedPhotosScreen(
-                    breedPhotosViewModel = viewModel,
+                    breedPhotosViewModel = getFakeViewModel(isLoadingState),
                     breedId = "", // Not Under test
                     breedName = "", // Not Under test
                 ) { }
@@ -102,15 +89,7 @@ class BreedPhotosScreenKtTest {
      */
     @Test
     fun assertContentShownAndNavigationWorksWhenRepoHasValidResponse() {
-        val viewModel =
-            BreedPhotosViewModel(
-                fakeDogRepo(getBreedPhotos = {
-                    ApiDogPhotosResponse(
-                        List(9) { "https://example.com/image.jpg" },
-                    )
-                }),
-                breedId = "",
-            )
+        val isLoadingState = BreedPhotoState(isError = false, isLoading = false, dogPhotoUrl = List(9) { "https://example.com/image.jpg" })
 
         var clickedBack: Boolean? = null
         val testCallback: () -> Unit = {
@@ -120,7 +99,7 @@ class BreedPhotosScreenKtTest {
         composeTestRule.setContent {
             InstaFetchTheme {
                 BreedPhotosScreen(
-                    breedPhotosViewModel = viewModel,
+                    breedPhotosViewModel = getFakeViewModel(isLoadingState),
                     breedId = "", // Not Under test
                     breedName = "DogName",
                     onNavigateBackTapped = testCallback,

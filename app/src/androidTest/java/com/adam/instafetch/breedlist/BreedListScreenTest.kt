@@ -8,35 +8,34 @@ import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.adam.instafetch.DogBreedModel
 import com.adam.instafetch.theme.InstaFetchTheme
-import com.adam.instafetch.util.fakeDogRepo
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import java.io.IOException
 
 private val dogBreed1 = DogBreedModel("breed1", "Breed 1")
 private val dogBreed2 = DogBreedModel("breed2", "Breed", "type 2")
 
 @RunWith(AndroidJUnit4::class)
 class BreedListScreenTest {
+    private fun getFakeViewModel(state: DogBreedListState) =
+        object : BreedListViewModel {
+            override val state: StateFlow<DogBreedListState> = MutableStateFlow(state)
+        }
+
     @get:Rule
     val composeTestRule = createComposeRule()
 
     @Test
-    fun assertErrorMessageShownWhenDogRepoThrowsException() {
-        val viewModel =
-            BreedListViewModel(
-                fakeDogRepo(getDogBreeds = {
-                    throw IOException("Test Exception ")
-                }),
-            )
+    fun assertErrorMessageShownWhenIsErrorState() {
+        val errorState = DogBreedListState(isError = true, isLoading = false, breeds = listOf())
 
         composeTestRule.setContent {
             InstaFetchTheme {
                 BreedListScreen(
-                    viewModel = viewModel,
+                    viewModel = getFakeViewModel(errorState),
                 ) { } // Not Under test
             }
         }
@@ -45,19 +44,18 @@ class BreedListScreenTest {
     }
 
     @Test
-    fun assertLoadingSpinnerShownWhenRepoHasDelayInResponse() {
-        val viewModel =
-            BreedListViewModel(
-                fakeDogRepo(getDogBreeds = {
-                    delay(1000)
-                    listOf()
-                }),
+    fun assertLoadingSpinnerShownWhenIsLoadingState() {
+        val isLoadingState =
+            DogBreedListState(
+                isError = false,
+                isLoading = true,
+                breeds = listOf(),
             )
 
         composeTestRule.setContent {
             InstaFetchTheme {
                 BreedListScreen(
-                    viewModel = viewModel,
+                    viewModel = getFakeViewModel(isLoadingState),
                     { }, // Not Under test
                 )
             }
@@ -70,24 +68,24 @@ class BreedListScreenTest {
      * Note: I've combined both the press and display assertions into a single test to minimise the runtime of the tests
      */
     @Test
-    fun assertContentShownAndClickCallsCallbackWhenRepoReturnsDogsInResponse() {
-        val viewModel =
-            BreedListViewModel(
-                fakeDogRepo(getDogBreeds = {
-                    listOf(dogBreed1, dogBreed2)
-                }),
-            )
-
+    fun assertContentShownAndClickCallsCallbackWhenDogBreedsStateSet() {
         // Not using Mockito (see README) so creating our own verification mechanism here
         var clickedBreed: DogBreedModel? = null
         val testCallback: (DogBreedModel) -> Unit = { breed ->
             clickedBreed = breed
         }
 
+        val breedsState =
+            DogBreedListState(
+                isError = false,
+                isLoading = false,
+                breeds = listOf(dogBreed1, dogBreed2),
+            )
+
         composeTestRule.setContent {
             InstaFetchTheme {
                 BreedListScreen(
-                    viewModel = viewModel,
+                    viewModel = getFakeViewModel(breedsState),
                     testCallback,
                 )
             }

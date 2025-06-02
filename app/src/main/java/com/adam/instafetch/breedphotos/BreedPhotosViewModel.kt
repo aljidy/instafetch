@@ -14,6 +14,7 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.adam.instafetch.BaseViewModel
 import com.adam.instafetch.DogsApp
 import com.adam.instafetch.DogsRepo
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import java.io.IOException
 
@@ -23,8 +24,8 @@ data class BreedPhotoState(
     val isLoading: Boolean = false,
 )
 
-class BreedPhotosViewModel(private val repo: DogsRepo, private val breedId: String) :
-    BaseViewModel<BreedPhotoState>(BreedPhotoState()) {
+class BreedPhotosViewModelImpl(private val repo: DogsRepo, private val breedId: String) :
+    BaseViewModel<BreedPhotoState>(BreedPhotoState()), BreedPhotosViewModel {
     init {
         getPhotos()
     }
@@ -56,7 +57,7 @@ class BreedPhotosViewModel(private val repo: DogsRepo, private val breedId: Stri
 
                     val breedId = this[BREED_ID] as String
 
-                    BreedPhotosViewModel(
+                    BreedPhotosViewModelImpl(
                         dogsModule.repo,
                         breedId,
                     )
@@ -72,4 +73,8 @@ class BreedPhotosViewModel(private val repo: DogsRepo, private val breedId: Stri
             }
         }
     }
+}
+
+interface BreedPhotosViewModel {
+    val state: StateFlow<BreedPhotoState>
 }
