@@ -1,7 +1,6 @@
 package com.adam.instafetch.breedphotos
 
 import app.cash.turbine.test
-import com.adam.instafetch.ApiDogPhotosResponse
 import com.adam.instafetch.DogsRepo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -31,7 +30,7 @@ class BreedPhotosViewModelImplTest {
     @Test
     fun `WHEN ViewModel init THEN isLoading setTo true after initial false`() =
         runTest {
-            whenever(dogsRepo.getBreedPhotos("")).thenReturn(ApiDogPhotosResponse())
+            whenever(dogsRepo.getBreedPhotos("")).thenReturn(listOf())
 
             val viewmodel = BreedPhotosViewModelImpl(dogsRepo, "")
 
@@ -50,7 +49,7 @@ class BreedPhotosViewModelImplTest {
     fun `GIVEN list of dog photos returns from repo WHEN init viewModel THEN state set to list and loading false`() =
         runTest {
             whenever(dogsRepo.getBreedPhotos("shiba")).thenReturn(
-                ApiDogPhotosResponse(listOf("https://example.com/shiba.png")),
+                listOf("https://example.com/shiba.png"),
             )
 
             val viewmodel = BreedPhotosViewModelImpl(dogsRepo, "shiba")

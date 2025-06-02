@@ -28,13 +28,12 @@ class BreedPhotosViewModelImpl(private val repo: DogsRepo, private val breedId: 
         getPhotos()
     }
 
-    // TODO shouldn't be the message
     private fun getPhotos() {
         viewModelScope.launch {
             setState { copy(isLoading = true) }
 
             try {
-                val photoUrl = repo.getBreedPhotos(breedId).message
+                val photoUrl = repo.getBreedPhotos(breedId)
 
                 setState { copy(dogPhotoUrl = photoUrl, isLoading = false) }
             } catch (e: IOException) {
