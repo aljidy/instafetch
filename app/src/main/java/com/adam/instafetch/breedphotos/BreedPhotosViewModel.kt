@@ -18,11 +18,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import java.io.IOException
 
-data class BreedPhotosState(
-    val dogPhotoUrl: List<String> = listOf(),
-    val isError: Boolean = false,
-    val isLoading: Boolean = false,
-)
+interface BreedPhotosViewModel {
+    val state: StateFlow<BreedPhotosState>
+}
 
 class BreedPhotosViewModelImpl(private val repo: DogsRepo, private val breedId: String) :
     BaseViewModel<BreedPhotosState>(BreedPhotosState()), BreedPhotosViewModel {
@@ -30,6 +28,7 @@ class BreedPhotosViewModelImpl(private val repo: DogsRepo, private val breedId: 
         getPhotos()
     }
 
+    // TODO shouldn't be the message
     private fun getPhotos() {
         viewModelScope.launch {
             setState { copy(isLoading = true) }
@@ -73,8 +72,4 @@ class BreedPhotosViewModelImpl(private val repo: DogsRepo, private val breedId: 
             }
         }
     }
-}
-
-interface BreedPhotosViewModel {
-    val state: StateFlow<BreedPhotosState>
 }

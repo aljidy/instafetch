@@ -1,97 +1,30 @@
-# README - Write up
+# README - Updated writeup
 
-Here's a brief overview giving some insight into my approach and my next steps.
+Please see the [original writeup/Readme](README_original.md) for more context.
 
-*Note: Developed against Android Studio Ladybug | 2024.2.1  and Gradle 8.9,
-I have also included an APK of the project in the root directory if required as well as demo 
-showing the loading and error states which can be hard to recreate.*
+Please note I've disregarded some of the changes in the original and focused on the improvements you suggested.
 
-- **Priorities**: My main focus was to implement the core functionality as specified in the ACs, specifically the networking and UI and navigation for both pages.
+## Notes:
 
-  - I felt like these were the most critical tasks as there's not much of app without them.
+- I've added UI Tests: BreedPhotosScreenTest, BreedListScreenTest
+  - For UI tests, I had a fair bit of trouble trying to get the mockito-inline working, so rather than spending
+    too much time on it, I made my own fakes where required, as can be seen in `BreedListScreenTest.kt` & `BreedPhotosScreenTest.kt`
+  - I've implemented UI test as pure UI unit tests rather than integration tests,
+    however you can see an example of an integration test with [ViewModel and Composables with this older commit where I used the real ViewModel to test.](https://github.com/aljidy/instafetch/commit/0f7a5cdbd3a282aef59bf7e5c821624420d211a4)
+    - If this were a production codebase, it would be important to have both integration and UI test coverage.
+  - Ideally would have tests for navigation, however this would likely be covered by integration tests
 
-- **With more time:** assuming there were no more features required to develop, I would:
+- I've added more unit tests: BreedPhotosViewModelImplTest & BreedListViewModelTest
 
-  - Add UI tests
-  - Improve the UI on the breeds photos screen/grid
-  - Perform some accessibility testing
-  - Profile the app (especially for recomposition issues)
-  - Improve the UI polish as detailed below
-  - Add an app icon
-  - Prep the release build of the app (minification, obfuscation etc.)
+- By abstracting the implementation from interface ViewModels and the DogsRepo, it allows for easier testing but also makes the code a bit more maintainable too
+- I've also abstract the mapping from API types to Domain Models and also made the ViewModels not depend directly on the API models for the sake of maintainability.
+- Navigation routes now have their own sealed class.
+- In some instances (like the state models), I've moved these into their own files as opposed to the Viewmodels, for readability and discoverability.  
 
-- **Time spent:** Approximately 4-5 hours on the project, plus the time taken to write this document
-  - I wanted to constrain the amount I could spend so that it was clear what I had to prioritise and
-decisions I had to make as well as exemplifying what I could achieve in a reasonable amount of time.
+- TODO Decouple the mapping from the Repo, API models shouldn't be passed through
 
+For the DI, I thought that the boilerplate was the main concern and it might make more sense to use a proper DI solution instead.
 
-## Approach
+- TODO Change DI
 
-- Read through the requirements and tips emails
-- Setup a starter code base from the Android Studio template
-- After that I put together a plan of the list of tasks I wanted to tackle
-
-## Plan
-
-I put together a  prioritised list of the tasks to tackle:
-
-- ~~**Add navigation to a second screen**~~
-- ~~**Add dog api**~~
-- ~~**Add dog repo and mapping**~~
-  - ~~Unit test mapping logic~~
-- ~~**implement network call on first screen and display content**~~
-  - ~~Call repo from ViewModel~~
-  - ~~Pipe results to state~~
-  - ~~Display content on screen~~
-- ~~**implement network call on dog photos and display content**~~
-  - ~~Call repo from ViewModel~~
-  - ~~Pipe results to state~~
-  - ~~Display content on in grid~~
-- ~~**Add error handling and loading states**~~
-- ~~Unit test for any business logic~~
-- ~~**Tidy up UI on Breed list screen**~~
-- **Add unit tests for viewModel state logic**
-- **Add UI tests**
-- **Tidy up UI on Breed photos screen**
-- *Everything else* - *I didn't think I could get anymore than the above done in time I allotted*
-
-
-
-
-
-## Visual Design Improvements
-
-Although visual design isn't my forte, if I had more time, I would be keen to condsider the following improvments:
-
-- Improving the Photo grid on the breeds photos screen so they sit a bit more cohesively together and don't look as jarring when there are portrait photos.
-- Maybe a bit more distinction between the different items on the DogBreed list
-- Adding a some color (e.g. adding color to the TopBar)
-- Refining some of the padding/margins on the dogs homepage
-- Add some simple animations to make the app more fluid and transitions less jarring
-- Adding an app icon and potentially a splash screen
-- Whilst not strictly Visual Design but UI, ideally I would add content descriptions for the dog photos coming back from the API (however I don't think would be possible as this data isn't return with the image)
-- Whilst not essential, supporting a dark theme
-
-## Technical discussion
-
-I thought I might explain a bit about my details of technical decisions: 
-
-- I kept the number of packages light to make it easier to navigate for yourselves, however would change this as the amount of code increased
-- I frequently left small classes like Models where they were called rather than extract them to their own files due to the small size of the codebase and to help discoverablility
-- I deprioritised writing UI tests due to the fact it was quicker for me to manually test however I would be keen to implement them if this were continued
-- It seems the breed data from the API is a bit inconsistent as some breeds have the words in their name reversed and some don't, this make it harder to show this to a user in human readable way 
-
-If I had more time, I would look to implement the following changes:
-
- 
-- The current dependency injection solution isn't ideal and is a bit clunky, however is fine for an app of this scale
-  - As the app scales, using something like Koin or Hilt would be ideal, being more robust and maintainable
-- I would look to improve the colors, spacing etc. to be a singular theme object
-- Add caching for the backend requests for better performance as well as image caching
-- Add more `@Preview` functions for some of the UI
-- Add static analysis tool like detekt and clean up any code smells
-
----------
-
-
- 
+TODO reusable Viewmodel loading / error handling

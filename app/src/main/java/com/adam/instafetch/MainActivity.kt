@@ -11,8 +11,8 @@ import androidx.navigation.toRoute
 import com.adam.instafetch.breedlist.BreedListScreen
 import com.adam.instafetch.breedlist.BreedListViewModel
 import com.adam.instafetch.breedphotos.BreedPhotosScreen
+import com.adam.instafetch.navigation.NavigationRoute
 import com.adam.instafetch.theme.InstaFetchTheme
-import kotlinx.serialization.Serializable
 
 class MainActivity : ComponentActivity() {
     private val breedListViewModel: BreedListViewModel by lazy {
@@ -26,15 +26,15 @@ class MainActivity : ComponentActivity() {
             val navController = rememberNavController()
 
             InstaFetchTheme {
-                NavHost(navController = navController, startDestination = BreedList) {
-                    composable<BreedList> {
+                NavHost(navController = navController, startDestination = NavigationRoute.BreedList) {
+                    composable<NavigationRoute.BreedList> {
                         BreedListScreen(breedListViewModel) { breed ->
-                            navController.navigate(route = BreedPhotos(breed.breedId, breed.userFriendlyName))
+                            navController.navigate(route = NavigationRoute.BreedPhotos(breed.breedId, breed.userFriendlyName))
                         }
                     }
 
-                    composable<BreedPhotos> { backStackEntry ->
-                        val breedPhotos: BreedPhotos = backStackEntry.toRoute()
+                    composable<NavigationRoute.BreedPhotos> { backStackEntry ->
+                        val breedPhotos: NavigationRoute.BreedPhotos = backStackEntry.toRoute()
                         BreedPhotosScreen(
                             breedId = breedPhotos.breedId,
                             breedName = breedPhotos.breedName,
@@ -47,8 +47,3 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@Serializable
-object BreedList
-
-@Serializable
-data class BreedPhotos(val breedId: String, val breedName: String)

@@ -1,6 +1,5 @@
 package com.adam.instafetch
 
-import android.content.Context
 import com.adam.instafetch.DogsService.Companion.BASE_URL
 import com.adam.instafetch.breedlist.BreedListViewModel
 import com.adam.instafetch.breedlist.BreedListViewModelImpl
@@ -11,8 +10,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
 
-// Leaving context here in case it's need for injection/init in future
-class DogsModule(applicationContext: Context) {
+class DogsModule {
     private val dogsService: DogsService = createDogsService()
     val repo: DogsRepo = DogsRepoImpl(dogsService)
 

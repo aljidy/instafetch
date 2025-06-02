@@ -14,6 +14,6 @@ class DogsApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        dogsModule = DogsModule(applicationContext)
+        dogsModule = DogsModule()
     }
 }

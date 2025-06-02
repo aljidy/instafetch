@@ -3,13 +3,16 @@ package com.adam.instafetch.breedlist
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.adam.instafetch.BaseViewModel
-import com.adam.instafetch.DogBreedModel
 import com.adam.instafetch.DogsRepo
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import java.io.IOException
+
+interface BreedListViewModel {
+    val state: StateFlow<DogBreedListState>
+}
 
 class BreedListViewModelImpl(
     private val repo: DogsRepo,
@@ -33,12 +36,4 @@ class BreedListViewModelImpl(
     }
 }
 
-data class DogBreedListState(
-    val breeds: List<DogBreedModel> = listOf(),
-    val isError: Boolean = false,
-    val isLoading: Boolean = false,
-)
 
-interface BreedListViewModel {
-    val state: StateFlow<DogBreedListState>
-}
