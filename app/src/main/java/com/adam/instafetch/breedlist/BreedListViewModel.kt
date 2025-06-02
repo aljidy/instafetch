@@ -4,19 +4,21 @@ import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.adam.instafetch.BaseViewModel
 import com.adam.instafetch.DogsRepo
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import java.io.IOException
+import javax.inject.Inject
 
 interface BreedListViewModel {
     val state: StateFlow<DogBreedListState>
 }
 
-class BreedListViewModelImpl(
+@HiltViewModel
+class BreedListViewModelImpl @Inject constructor(
     private val repo: DogsRepo,
-    private val dispatcher: CoroutineDispatcher = Dispatchers.Main, // Injected in for testing
+      private val dispatcher: CoroutineDispatcher
 ) : BaseViewModel<DogBreedListState>(DogBreedListState()), BreedListViewModel {
     init {
         getBreeds()

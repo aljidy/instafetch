@@ -24,10 +24,9 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import coil3.compose.AsyncImage
 import com.adam.instafetch.R
-import com.adam.instafetch.breedphotos.BreedPhotosViewModelImpl.Companion.extrasWithBreedId
 import com.adam.instafetch.theme.InstaFetchTheme
 import com.adam.instafetch.ui.CentredLoadingSpinner
 import com.adam.instafetch.ui.GenericErrorMessage
@@ -37,14 +36,8 @@ const val BREED_LIST_GRID_CELL_SIZE_DP = 200
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BreedPhotosScreen(
-    breedId: String,
     breedName: String,
-    breedPhotosViewModel: BreedPhotosViewModel =
-        viewModel(
-            modelClass = BreedPhotosViewModelImpl::class,
-            factory = BreedPhotosViewModelImpl.Factory,
-            extras = extrasWithBreedId(breedId),
-        ),
+    breedPhotosViewModel: BreedPhotosViewModel = hiltViewModel<BreedPhotosViewModelImpl>(),
     onNavigateBackTapped: () -> Unit,
 ) {
     Scaffold(modifier = Modifier.fillMaxSize(), topBar = {

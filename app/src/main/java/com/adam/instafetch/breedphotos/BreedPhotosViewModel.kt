@@ -1,29 +1,29 @@
 package com.adam.instafetch.breedphotos
 
 import android.util.Log
-import androidx.compose.runtime.Composable
-import androidx.lifecycle.HasDefaultViewModelProviderFactory
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.CreationExtras
-import androidx.lifecycle.viewmodel.MutableCreationExtras
-import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
 import com.adam.instafetch.BaseViewModel
-import com.adam.instafetch.DogsApp
 import com.adam.instafetch.DogsRepo
+import com.adam.instafetch.navigation.NavigationRoute.BreedPhotos.Companion.BREED_ID_KEY
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import java.io.IOException
+import javax.inject.Inject
 
 interface BreedPhotosViewModel {
     val state: StateFlow<BreedPhotosState>
 }
 
-class BreedPhotosViewModelImpl(private val repo: DogsRepo, private val breedId: String) :
-    BaseViewModel<BreedPhotosState>(BreedPhotosState()), BreedPhotosViewModel {
+@HiltViewModel
+class BreedPhotosViewModelImpl @Inject constructor(
+    private val repo: DogsRepo,
+    savedStateHandle: SavedStateHandle
+) : BaseViewModel<BreedPhotosState>(BreedPhotosState()), BreedPhotosViewModel {
+
+    private val breedId: String = checkNotNull(savedStateHandle[BREED_ID_KEY]) { "$BREED_ID_KEY parameter is missing" }
+
     init {
         getPhotos()
     }
@@ -40,34 +40,6 @@ class BreedPhotosViewModelImpl(private val repo: DogsRepo, private val breedId: 
                 Log.e(this::class.simpleName, "Couldn't get breed photos", e)
 
                 setState { copy(isError = true, isLoading = false) }
-            }
-        }
-    }
-
-    companion object {
-        private val BREED_ID = object : CreationExtras.Key<String> {}
-
-        val Factory: ViewModelProvider.Factory =
-            viewModelFactory {
-                initializer {
-                    val application = checkNotNull(this[APPLICATION_KEY])
-                    val dogsModule = DogsApp.from(application.applicationContext)
-
-                    val breedId = this[BREED_ID] as String
-
-                    BreedPhotosViewModelImpl(
-                        dogsModule.repo,
-                        breedId,
-                    )
-                }
-            }
-
-        @Composable
-        fun extrasWithBreedId(breedName: String): MutableCreationExtras {
-            return MutableCreationExtras(
-                ((LocalViewModelStoreOwner.current as HasDefaultViewModelProviderFactory).defaultViewModelCreationExtras),
-            ).apply {
-                set(BREED_ID, breedName)
             }
         }
     }

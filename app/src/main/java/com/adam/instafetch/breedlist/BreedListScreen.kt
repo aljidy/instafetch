@@ -27,6 +27,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.adam.instafetch.DogBreedModel
 import com.adam.instafetch.R
@@ -38,7 +39,7 @@ import com.adam.instafetch.ui.GenericErrorMessage
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BreedListScreen(
-    viewModel: BreedListViewModel,
+    viewModel: BreedListViewModel = hiltViewModel<BreedListViewModelImpl>(),
     onNextButtonTap: (DogBreedModel) -> Unit,
 ) {
     Scaffold(modifier = Modifier.fillMaxSize(), topBar = {

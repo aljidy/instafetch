@@ -58,7 +58,6 @@ class BreedPhotosScreenTest {
             InstaFetchTheme {
                 BreedPhotosScreen(
                     breedPhotosViewModel = getFakeViewModel(isErrorState),
-                    breedId = "", // Not Under test
                     breedName = "", // Not Under test
                 ) { }
             }
@@ -75,7 +74,6 @@ class BreedPhotosScreenTest {
             InstaFetchTheme {
                 BreedPhotosScreen(
                     breedPhotosViewModel = getFakeViewModel(isLoadingState),
-                    breedId = "", // Not Under test
                     breedName = "", // Not Under test
                 ) { }
             }
@@ -100,7 +98,6 @@ class BreedPhotosScreenTest {
             InstaFetchTheme {
                 BreedPhotosScreen(
                     breedPhotosViewModel = getFakeViewModel(isLoadingState),
-                    breedId = "", // Not Under test
                     breedName = "DogName",
                     onNavigateBackTapped = testCallback,
                 )

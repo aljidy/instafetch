@@ -7,18 +7,14 @@ import androidx.activity.enableEdgeToEdge
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.toRoute
 import com.adam.instafetch.breedlist.BreedListScreen
-import com.adam.instafetch.breedlist.BreedListViewModel
 import com.adam.instafetch.breedphotos.BreedPhotosScreen
 import com.adam.instafetch.navigation.NavigationRoute
 import com.adam.instafetch.theme.InstaFetchTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    private val breedListViewModel: BreedListViewModel by lazy {
-        DogsApp.from(applicationContext).injectBreedListViewModel()
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -26,19 +22,24 @@ class MainActivity : ComponentActivity() {
             val navController = rememberNavController()
 
             InstaFetchTheme {
-                NavHost(navController = navController, startDestination = NavigationRoute.BreedList) {
+                NavHost(
+                    navController = navController,
+                    startDestination = NavigationRoute.BreedList
+                ) {
                     composable<NavigationRoute.BreedList> {
-                        BreedListScreen(breedListViewModel) { breed ->
-                            navController.navigate(route = NavigationRoute.BreedPhotos(breed.breedId, breed.userFriendlyName))
+                        BreedListScreen { breed ->
+                            navController.navigate(NavigationRoute.BreedPhotos(breed.breedId, breed.userFriendlyName)) {
+                            }
                         }
                     }
 
                     composable<NavigationRoute.BreedPhotos> { backStackEntry ->
-                        val breedPhotos: NavigationRoute.BreedPhotos = backStackEntry.toRoute()
+                        checkNotNull(backStackEntry.arguments?.getString(NavigationRoute.BreedPhotos.BREED_ID_KEY))
+                        val breedName = checkNotNull(backStackEntry.arguments?.getString(NavigationRoute.BreedPhotos.BREED_NAME_KEY))
+                        
                         BreedPhotosScreen(
-                            breedId = breedPhotos.breedId,
-                            breedName = breedPhotos.breedName,
-                            onNavigateBackTapped = { navController.popBackStack() },
+                             breedName = breedName,
+                            onNavigateBackTapped = { navController.popBackStack() }
                         )
                     }
                 }
@@ -46,4 +47,3 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-

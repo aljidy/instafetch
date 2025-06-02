@@ -1,7 +1,9 @@
 package com.adam.instafetch.breedphotos
 
+import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
 import com.adam.instafetch.DogsRepo
+import com.adam.instafetch.navigation.NavigationRoute.BreedPhotos.Companion.BREED_ID_KEY
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -32,7 +34,13 @@ class BreedPhotosViewModelImplTest {
         runTest {
             whenever(dogsRepo.getBreedPhotos("")).thenReturn(listOf())
 
-            val viewmodel = BreedPhotosViewModelImpl(dogsRepo, "")
+            val viewmodel =
+                BreedPhotosViewModelImpl(
+                    dogsRepo,
+                    SavedStateHandle(
+                        mapOf(BREED_ID_KEY to "") // Not under test but required
+                    )
+                )
 
             viewmodel.state.test {
                 val initialState = awaitItem()
@@ -52,7 +60,13 @@ class BreedPhotosViewModelImplTest {
                 listOf("https://example.com/shiba.png"),
             )
 
-            val viewmodel = BreedPhotosViewModelImpl(dogsRepo, "shiba")
+            val viewmodel = BreedPhotosViewModelImpl(
+                dogsRepo, SavedStateHandle(
+                    mapOf(
+                        BREED_ID_KEY to "shiba"
+                    )
+                )
+            )
 
             advanceUntilIdle()
 
@@ -70,7 +84,10 @@ class BreedPhotosViewModelImplTest {
         runTest {
             whenever(dogsRepo.getBreedPhotos("testBreed")).thenAnswer { throw IOException("test exception") }
 
-            val viewmodel = BreedPhotosViewModelImpl(dogsRepo, "testBreed")
+            val viewmodel = BreedPhotosViewModelImpl(
+                dogsRepo,
+                SavedStateHandle(mapOf(BREED_ID_KEY to "testBreed"))
+            )
 
             advanceUntilIdle()
 
