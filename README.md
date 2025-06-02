@@ -23,8 +23,7 @@ Please note I've disregarded some of the changes in the original and focused on 
 - In some instances (like the state models), I've moved these into their own files as opposed to the Viewmodels, for readability and discoverability.  
 - By using DogsApiMapper, the viewModel no longer uses any Models from the API layer, making the app easy to maintain as there's no direct dependency anymore.
 
-For the DI, I thought that the boilerplate was the main concern and it might make more sense to use a proper DI solution instead.
+- For the DI, I thought that the boilerplate was the main concern with how unwieldy some of the factories were and it might make more sense to use a proper DI solution instead.
+  - Whilst I prefer the ease of Koin, I used Hilt, as it's the typically recommended solution.
 
-- TODO Change DI
-
-TODO reusable Viewmodel loading / error handling
+- If I had more time I would look at deduplicating the ViewModel loading and error handling
